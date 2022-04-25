@@ -1,7 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom';
 
-function barSearch() {
+function BarSearch() {
+     let navigate = useNavigate();
+     const handleSubmit = () => {
+         navigate('/search');
+     }
     return (
     <>
         <div className="d-flex justify-content-center">
@@ -44,9 +48,9 @@ function barSearch() {
                         </div>
                     </div>
                     <div className="col-auto d-flex align-items-end">
-                        <Link to='/search'>
-                        <button className="btn btn-master btn-search submit btn-primary">Cari Mobil</button>
-                        </Link>
+                        
+                        <button className="btn btn-master btn-search submit btn-primary" onClick={handleSubmit}>Cari Mobil</button>
+                        
                     </div>
                 </div>
             </div>
@@ -54,5 +58,4 @@ function barSearch() {
     </>
     )
 }
-
-export default barSearch
+export default BarSearch

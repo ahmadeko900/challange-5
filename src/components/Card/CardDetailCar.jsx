@@ -1,26 +1,17 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
 import User from '../../assets/icon/fi_users.svg'
 import Setting from '../../assets/icon/fi_settings.svg'
 import Calendar from '../../assets/icon/fi_calendar.svg'
+import { useSelector } from 'react-redux';
 
-const baseURL = "https://rent-cars-api.herokuapp.com/customer/car";
 function CardDetailCars() {
-const { id } = useParams();
-const [cars, setCars] = useState([]);
-useEffect(() => {
-const getCars = async () => {
-const { data: res } = await axios.get(baseURL+'/'+id);
-setCars(res)
-}
-getCars()
-},[ id ])
+  const { isLoading: loadingCar, data: item} = useSelector((state) => state.carById);
+
   return (
-  <section className="page-detail d-flex justify-content-center">
+    <section className="page-detail d-flex justify-content-center">
+    {loadingCar ? 'Loading' : (
     <div className="detail-section mt-4">
       <div className="row">
-        <div className="col-auto">
+        <div className="package col-auto">
           <div className="card card-detail mt-2">
             <p><strong>Tentang Paket</strong></p>
             <div class="card-body">
@@ -51,26 +42,28 @@ getCars()
               </ul>
             </div>
           </div>
+          <div className="button d-flex justify-content-end">
           <button type="button" class="btn btn-bayar mt-4"> Lanjutkan Pembayaran </button>
+          </div>
         </div>
 
         <div className="col-auto">
           <div class="card-detail-mobil mt-2">
             <div class="card-body">
-              <img src={cars.image} class="showcase-img" alt="img-car" />
-              <p><strong>{cars.name}/{cars.category}</strong></p>
+              <img src={`${ item.image }`} class="showcase-img" alt="img-car" />
+              <p><strong>{`${ item.name }`}/{`${ item.category }`}</strong></p>
               <div className="icon d-flex">
                 <p class="card-text">
-                  <img className='me-1' src={User} alt="icon-key" />4 Orang
+                  <img className='me-1' src={User} alt="icon-key" />{`${ item.capacity }`} orang
                 </p>
                 <p class="card-text">
-                  <img className='me-1' src={Setting} alt="icon-clock" />Manual
+                  <img className='me-1' src={Setting} alt="icon-clock" />{`${ item.transmission }`}
                 </p>
                 <p class="card-text">
-                  <img className='me-1' src={Calendar} alt="icon-clock" />Tahun 2020
+                  <img className='me-1' src={Calendar} alt="icon-clock" />Tahun {`${ item.year }`}
                 </p>
               </div>
-              <p>Total <span><strong>Rp {cars.price}</strong></span></p>
+              <p>Total <span><strong>Rp {`${ item.price }`}</strong></span></p>
               <button type="button" class="btn btn-bayar2">Lanjutkan Pembayaran
               </button>
             </div>
@@ -78,6 +71,7 @@ getCars()
         </div>
       </div>
     </div>
+  )}
   </section>
   )
 }
